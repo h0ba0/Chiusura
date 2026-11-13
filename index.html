@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Chiusura turno</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:env(safe-area-inset-top,0px) 0 calc(76px + env(safe-area-inset-bottom,0px));background:#c9cac5;font:13px/1.3 Arial,Helvetica,sans-serif;color:#222}
+button,.btn{min-height:44px;padding:0 14px;font:700 15px Arial,sans-serif;border:1px solid #888;border-radius:8px;background:#fff;color:#111;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer}
+.p{background:#1d3fb0;border-color:#1d3fb0;color:#fff}
+.top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;max-width:760px;margin:0 auto;padding:8px 10px}
+.hint{flex:1 1 100%;margin:0;font-size:12px}
+.bot{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;gap:8px;padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));background:#fff;border-top:1px solid #999}
+.bot button{flex:1;padding:0 6px}
+#ms{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;width:max-content;max-width:92%;padding:10px 14px;border-radius:8px;background:#222;color:#fff;font-size:14px;text-align:center}
+#ms:empty{display:none}
+#md{position:fixed;inset:0;z-index:20;display:flex;justify-content:center;align-items:flex-start;overflow:auto;padding:16px;background:rgba(0,0,0,.55)}
+#md[hidden]{display:none}
+.box{width:100%;max-width:560px;padding:14px;border-radius:10px;background:#fff;color:#111;font-size:14px}
+.box h3{margin:0 0 10px}
+.box label{display:block;margin:8px 0 2px}
+.box input,.box select{width:100%;min-height:44px;padding:0 8px;font:16px Arial,sans-serif;border:1px solid #888;border-radius:6px}
+.box button,.box .btn{width:100%;margin-top:8px}
+.ck{max-width:760px;margin:0 auto 8px;padding:6px 10px;background:#fff;border-radius:8px}
+.ck .r{margin:4px 0}
+.ck input{flex:1 1 140px;min-width:0;min-height:36px;padding:0 6px;font:15px Arial,sans-serif;border:1px solid #888;border-radius:6px}
+#doc{max-width:760px;margin:0 auto}
+.sheet{padding:16px;background:#fff;margin-bottom:12px}
+.r{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;margin:8px 0}
+.r b{font-weight:400;font-size:12px;white-space:nowrap}
+.r small{font-size:11px;white-space:nowrap}
+.g{display:flex;align-items:baseline;gap:4px;flex:2 1 150px}
+.paper input,.paper textarea{flex:1 1 56px;width:100%;min-width:0;margin:0;padding:0 2px;border:0;border-bottom:1px solid #666;border-radius:0;background:transparent;outline:0;text-align:center;font:600 21px/1.1 Caveat,"Segoe Print",cursive;color:#111}
+.paper textarea{flex:1 1 100%;text-align:left;border:1px solid #666;resize:none;height:60px}
+.paper textarea::placeholder{font:400 10px Arial;color:#777}
+.paper input:focus,.paper textarea:focus{background:#fff6c8}
+.paper input.a{color:#1d3fb0}.paper input.neg{color:#c0262d}
+.paper input.t{text-align:left;flex:3 1 120px}
+.paper input.w{flex:none;width:92px}
+.paper td input{border:0}
+.cb{display:inline-block;width:18px;height:18px;border:1px solid #444;text-align:center;font:700 15px/16px Arial;vertical-align:-4px;margin:0 2px 0 6px;cursor:pointer}
+.ttl{text-align:center;font-size:12px;letter-spacing:5px;margin:16px 0 4px}
+.pg{display:grid;grid-template-columns:1fr 1fr;border:3px double #666}
+.pg>div{padding:2px 6px 6px}.pg>div+div{border-left:1px solid #666}
+.pg .r{margin:4px 0}.paper .pg .r input:not(.t){flex:0 0 70px}
+table{border-collapse:collapse;width:100%;table-layout:fixed;margin-top:10px}
+th,td{border:1px solid #666;padding:2px;font-size:11px;font-weight:400;text-align:center;height:34px}
+td.l{text-align:left;padding-left:5px;font-size:12px}
+th.v{width:30px}
+.v span{display:inline-block;writing-mode:vertical-rl;transform:rotate(180deg);font-weight:700;letter-spacing:1px}
+.dg{background:linear-gradient(to top right,transparent 49.3%,#555 49.3%,#555 50.7%,transparent 50.7%)}
+.h{font:600 23px Caveat,cursive;color:#1d3fb0;margin-right:14px}
+@media(max-width:480px){.sheet{padding:12px 8px}.r b{font-size:11px}.paper input{font-size:19px}.paper input.w{width:74px}}
+.box img{width:100%;border:1px solid #bbb;margin-top:8px}
+@media print{body>*{display:none!important}#md{display:block!important;position:static;background:none;padding:0}#md .box{max-width:none;padding:0}#md .box>*{display:none}#md .box>img{display:block;border:0;margin:0;page-break-after:always}}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.hd>div:first-child{flex:1 1 auto;min-width:0}
+.tn{display:flex;gap:8px;align-items:flex-start;margin-top:6px}
+.tn b{font-weight:400;font-size:12px}
+.tn>div{display:flex;flex-direction:column;gap:4px}
+.ci{display:flex;align-items:center;margin:0}
+.ci .cb{margin:0 4px 0 0}
+.bx{border:3px double #666;padding:2px 8px}
+.no{width:18px;text-align:right}
+th.tg{font-size:12px;font-weight:700}
+td.nb{border:0}
+td.rt{text-align:right;font-weight:700;padding-right:8px}
+#kp{position:absolute;z-index:15;display:none;gap:6px;padding:5px;background:#222;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+#kp.on{display:flex}
+#kp button{min-width:52px;min-height:42px;padding:0;font:700 24px Arial,sans-serif;color:#fff;background:#555;border:0;border-radius:8px}
+.paper .ini{background:#e4f3df}
+.paper .fin{background:#f6dfd5}
+.srb .r{margin:4px 0}
+.r b.lb{width:62px;font-weight:700}
+.paper input.sn{text-align:left;flex:1 1 140px}
+.pz{min-width:84px;font:600 20px Caveat,cursive;color:#1d3fb0}
+.fh{margin:2px 0 6px;font-size:11px;font-style:italic;color:#8a8a8a}
+.col .srb{display:none}
+#kp .sp{display:none;min-width:170px;font-size:18px}
+#kp.s .n{display:none}
+#kp.s .sp{display:block}
+</style>
+</head>
+<body>
+<div class="top"><button id="cl">Svuota il foglio</button><p class="hint">Verde = iniziale (lasciato dal collega) · Mattone = finale (il tuo) · Blu = calcolato da solo. Nei campi finali scrivi i totali stampati dal terminale (se sono due: 4379+260). Toccando un campo compaiono i tasti − + , per i numeri negativi.</p></div>
+<div class="ck"><div class="r"><b>Collega che subentra:</b><input data-k="nx" autocomplete="off"></div></div>
+<div id="doc" class="paper"></div>
+<div class="bot"><button class="p" id="bm">Il mio foglio</button><button id="bc">Foglio per il collega</button></div>
+<div id="ms"></div>
+<div id="md" hidden></div>
+<div id="kp"><button class="n" tabindex="-1" data-ch="-">−</button><button class="n" tabindex="-1" data-ch="+">+</button><button class="n" tabindex="-1" data-ch=",">,</button><button class="sp" tabindex="-1" data-ch=" ">spazio</button></div>
+<script>
+const D=document,$=s=>D.querySelector(s),E={},S={1:"Notte",2:"Mattina",3:"Pomeriggio"};
+const G=[["mo","MOONEY"],["lo","LOTTO:"],["li","LIS:"],["sr","SIR:"]];
+const T=[[30,"€ 30"],[20,"€ 20"],[10,"€ 10"],[5,"€ 5"],[3,"€ 3"],[2,"€ 2"],[0,"LOTTERIA"]];
+const I=(k,o="")=>`<input data-k="${k}" autocomplete="off"${/[tx]/.test(o)?"":' inputmode="decimal"'} class="${o.includes("t")?"t":""}${o.includes("w")?" w":""}">`;
+const O=k=>`<input data-c="${k}" autocomplete="off" inputmode="decimal">`;
+const cb=(v,l)=>`<span class="cb" data-v="${v}"></span><b>${l}</b>`;
+const pc=(a,t)=>`<div>${a.map(i=>`<div class="r"><b class="no">${i+1}</b>${I("pa"+i)}${I("pd"+i,"t")}</div>`).join("")}${t?`<div class="r"><b>TOT. PAG.TI</b>${O(t)}</div>`:""}</div>`;
+const s1=`<section class="sheet">
+<div class="hd"><div><div class="r"><b>/BAR - CHIUSURA DI CASSA DEL</b>${I("dt","tw")}</div><div class="r"><b>CASSIERE:</b>${I("ca","t")}</div></div><div class="tn"><b>TURNO</b><div>${[[1,"2200-06:00"],[2,"06:00-14:00"],[3,"14:00-22:00"]].map(([v,l])=>`<label class="ci">${cb(v,l)}</label>`).join("")}</div></div></div><input type="hidden" data-k="sh">
+<div class="r"><b>CONTANTI:</b>${O("co")}<span class="g"><small>CONT.VALORE INIZIALE</small>${I("coi")}</span><span class="g"><small>VALORE FINALE</small>${I("cof","x")}</span></div>
+<div class="r">${I("rn","tw")}<b>REFIL</b>${I("rl","x")}<span class="g"><small>ACCONTI DIPENDENTI</small>${I("ac","x")}</span><span class="g"><small>VLT</small>${I("rt","x")}</span></div>
+<div class="r"><b>POS:</b>${O("pp")}<span class="g"><small>(valore iniziale</small>${I("pi")}<small>)</small></span><span class="g"><small>(valore finale</small>${I("pf","x")}<small>)</small></span></div>
+<div class="ttl">S E R V I Z I</div>
+<div class="bx"><div class="r"><b>Gr.&amp;Vinci:</b>${O("gva")}<span class="g"><small>(vincite pagate</small>${I("gvf","x")}</span><span class="g"><small>valore iniziale</small>${I("gvi")}<small>)</small></span></div>
+${G.map(([k,n])=>`<div class="r"><b>${n}</b>${O(k+"a")}<span class="g"><small>(valore iniziale</small>${I(k+"i")}<small>)</small></span><span class="g"><small>(valore finale</small>${I(k+"f","x")}<small>)</small></span></div>`).join("")}</div>
+<div class="ttl">P A G A M E N T I</div>
+<div class="pg">${pc([0,1,2,3,4,5,6])}${pc([7,8,9,10,11,12],"pt")}</div>
+<div class="srb"><div class="ttl">CONTEGGIO SERIALI</div><p class="fh">Scrivi l’ultimo seriale reale che vedi su ogni blocco, senza aggiungere 1. Se hai più blocchi, separa i numeri con uno spazio.</p>${T.map(([p,l],i)=>`<div class="r"><b class="lb">${l}</b><input data-k="se${i}" inputmode="numeric" autocomplete="off" class="sn"><span class="pz" data-p="${i}"></span></div>`).join("")}</div>
+<table><tr><th class="v" rowspan="8"><span>GRATTA &amp; VINCI</span></th><th>TAGLIO</th><th>INIZIO</th><th>FINE</th><th>VENDUTO</th><th>TAGLIO</th><th>VINCITE</th><th>NETTO</th></tr>
+${T.map(([p,l],i)=>`<tr><th class="tg">${l}</th><td>${I("gi"+i)}</td><td>${O("gf"+i)}</td><td>${O("gs"+i)}</td><td>${p?O("gm"+i):I("gm"+i)}</td>${i<2?"<td></td><td></td>":i==2?'<td class="dg"></td><td class="dg"></td>':i==3?'<td class="dg" rowspan="4"></td><td class="dg" rowspan="4"></td>':""}</tr>`).join("")}
+<tr><td class="nb"></td><td colspan="4" class="rt">TOTALI</td><td>${O("gmt")}</td><td>${O("gvt")}</td><td>${O("gnt")}</td></tr></table></section>`;
+$("#doc").innerHTML=s1;
+D.querySelectorAll("[data-k],[data-c]").forEach(e=>E[e.dataset.k||e.dataset.c]=e);
+Object.keys(E).forEach(k=>{const c=/^(coi|pi|gvi|moi|loi|lii|sri|gi\d)$/.test(k)?"ini":/^(cof|pf|gvf|mof|lof|lif|srf|gf\d|se\d)$/.test(k)?"fin":"";if(c)(E[k].closest("td")||E[k]).classList.add(c)});
+
+/* ---- calcoli ---- */
+const ev=s=>{const m=String(s).replace(/,/g,".").replace(/[−–—]/g,"-").match(/[+-]?\s*\d*\.?\d+/g);return m?m.reduce((a,x)=>a+parseFloat(x.replace(/\s/g,"")),0):null};
+const n=k=>E[k]?ev(E[k].value):null;
+const fm=x=>x==null||isNaN(x)?"":String(Math.round(x*100)/100).replace(".",",");
+const sum=(...a)=>a.some(x=>x!=null)?a.reduce((s,x)=>s+(x||0),0):null;
+const sub=(a,b)=>a!=null&&b!=null?a-b:null;
+const mul=(a,b)=>a!=null&&b!=null?a*b:null;
+const lt=s=>{const p=String(s).split("+").filter(x=>x.trim());return p.length?fm(ev(p[p.length-1])):""};
+const pz=s=>{const m=String(s).match(/\d+/g);return m?m.reduce((a,x)=>a+ +x+1,0):null};
+const td=()=>{const d=new Date();return d.getDate()+"/"+(d.getMonth()+1)+"/"+String(d.getFullYear()).slice(2)};
+const C={};
+const net=(f,i)=>n(f)==null?null:n(f)-(n(i)||0);
+C.co=()=>net("cof","coi");C.pp=()=>net("pf","pi");C.gva=()=>net("gvf","gvi");
+G.forEach(([k])=>C[k+"a"]=()=>net(k+"f",k+"i"));
+T.forEach(([p],i)=>{C["gf"+i]=()=>pz(E["se"+i].value);C["gs"+i]=()=>sub(n("gi"+i),n("gf"+i));if(p)C["gm"+i]=()=>mul(n("gs"+i),p)});
+C.gmt=()=>sum(...T.map((_,i)=>n("gm"+i)));C.gvt=()=>n("gva");C.gnt=()=>sub(n("gmt"),n("gvt"));
+C.pt=()=>sum(...[...Array(13).keys()].map(i=>n("pa"+i)));
+function calc(){
+ for(const k in C){const e=E[k];if(!e||e.dataset.o)continue;const r=C[k]();e.value=fm(r);e.classList.toggle("a",r!=null);e.classList.toggle("neg",r<0&&/^[gk][smt]\d/.test(k))}
+ D.querySelectorAll(".cb").forEach(e=>e.textContent=E.sh.value==e.dataset.v?"✕":"");
+ D.querySelectorAll("[data-p]").forEach(e=>{const v=pz(E["se"+e.dataset.p].value);e.textContent=v==null?"":"= "+v+" pz"});
+}
+function reset(){Object.values(E).forEach(e=>{e.value="";delete e.dataset.o;e.classList.remove("a","neg")});E.dt.value=td()}
+
+/* ---- stato locale ---- */
+const ls=(k,v)=>{try{return v===undefined?localStorage.getItem(k):localStorage.setItem(k,v)}catch(x){return null}};
+const payload=()=>({campi:Object.fromEntries(Object.entries(E).filter(([,e])=>e.value!=="").map(([k,e])=>[k,e.value])),manuali:Object.keys(E).filter(k=>E[k].dataset.o)});
+const saveL=()=>ls("ct3",JSON.stringify(payload()));
+function applica(p){reset();const f=p.campi||{};for(const k in f)if(E[k])E[k].value=f[k];(p.manuali||[]).forEach(k=>{if(E[k])E[k].dataset.o=1});T.forEach((_,i)=>{if(E["gf"+i].value&&!E["se"+i].value)E["gf"+i].dataset.o=1});calc()}
+
+/* ---- interfaccia ---- */
+function msg(t){const m=$("#ms");m.textContent=t;clearTimeout(msg.t);msg.t=setTimeout(()=>m.textContent="",5500)}
+function show(h){const m=$("#md");m.innerHTML='<div class="box">'+h+'<button data-a="x">Chiudi</button></div>';m.hidden=false}
+const hide=()=>{$("#md").hidden=true};
+function ask(b,f){if(b.dataset.q){clearTimeout(+b.dataset.q);b.textContent=b.dataset.t;delete b.dataset.q;f();return}b.dataset.t=b.textContent;b.textContent="Sicuro? Tocca di nuovo";b.dataset.q=setTimeout(()=>{b.textContent=b.dataset.t;delete b.dataset.q},3500)}
+function nd(){const m=E.dt.value.match(/\d+/g),s=E.sh.value;if(!m||m.length<3||!S[s])return td();const d=new Date(2e3+(+m[2]%100),m[1]-1,+m[0]+(s==3?1:0));return d.getDate()+"/"+(d.getMonth()+1)+"/"+String(d.getFullYear()).slice(2)}
+function prepara(){
+ const c={},l=k=>lt(E[k].value);
+ c.coi=fm(n("cof"));c.pi=l("pf");c.gvi=l("gvf");
+ G.forEach(([k])=>c[k+"i"]=l(k+"f"));
+ T.forEach((_,i)=>c["gi"+i]=E["gf"+i].value);
+ c.dt=nd();c.ca=E.nx.value;c.sh=String(E.sh.value%3+1);
+ reset();Object.entries(c).forEach(([k,v])=>E[k].value=v);calc();
+}
+const P=[["Cassa","coi","cof"],["POS","pi","pf"],["Gr.&Vinci","gvi","gvf"],...G.map(([k,n])=>[n.replace(":",""),k+"i",k+"f"]),...T.map(([,l],i)=>["Gratta e Vinci "+l,"gi"+i,"gf"+i])];
+const miss=()=>P.filter(([,a,b])=>E[a].value&&!E[b].value).map(x=>x[0]);
+async function immagine(cl,w=[]){
+ try{
+  if(D.activeElement)D.activeElement.blur();
+  msg("Preparo le immagini…");
+  await D.fonts.ready;
+  const fs=[],base=(cl?"consegna-":"foglio-")+(E.dt.value.replace(/\D+/g,"-")||"turno");
+  let i=0;
+  for(const el of D.querySelectorAll(".sheet")){
+   const c=await html2canvas(el,{scale:Math.max(1.5,Math.min(3,1200/el.offsetWidth)),backgroundColor:"#fff"}),b=await new Promise(r=>c.toBlob(r,"image/png"));
+   fs.push(new File([b],base+"-"+(++i)+".png",{type:"image/png"}));
+  }
+  window.PF=fs;
+  const us=fs.map(x=>URL.createObjectURL(x)),sh=navigator.canShare&&navigator.canShare({files:fs});
+  show("<h3>"+(cl?"Foglio per il collega":"Il mio foglio")+"</h3>"+(w.length?"<p>⚠ Controlla: manca iniziale o finale di <b>"+w.join(", ")+"</b></p>":"")+(sh?'<button class="p" data-a="sh">Condividi (WhatsApp)</button>':"")+'<button data-a="pr">Stampa</button>'+us.map((u,j)=>'<img src="'+u+'"><a class="btn" href="'+u+'" download="'+fs[j].name+'">Scarica'+(fs.length>1?" pagina "+(j+1):"")+"</a>").join(""));
+  msg("");
+ }catch(x){msg("Non riesco a creare le immagini")}
+}
+async function perCollega(){const w=miss(),p0=payload();D.body.classList.add("col");prepara();try{await immagine(1,w)}finally{D.body.classList.remove("col");applica(p0)}}
+$("#md").onclick=e=>{
+ const b=e.target.closest("button,a"),a=b&&b.dataset.a;
+ if(e.target.id=="md"||a=="x")return hide();
+ if(a=="sh")navigator.share({files:window.PF,title:"Chiusura turno"}).catch(()=>{});
+ if(a=="pr")window.print();
+};
+D.addEventListener("input",e=>{const t=e.target;if(!t.closest("#doc,.ck"))return;if(t.dataset.c){if(t.value.trim())t.dataset.o=1;else delete t.dataset.o;t.classList.remove("a")}calc();saveL()});
+D.addEventListener("click",e=>{const l=e.target.closest(".ci,.cb"),c=l&&(l.matches(".cb")?l:l.querySelector(".cb"));if(c){E.sh.value=E.sh.value==c.dataset.v?"":c.dataset.v;calc();saveL()}});
+$("#bm").onclick=()=>immagine(0,miss());
+$("#bc").onclick=()=>perCollega();
+$("#cl").onclick=e=>ask(e.target,()=>{reset();calc();saveL();scrollTo(0,0)});
+
+let last=null;
+const kp=$("#kp");
+D.addEventListener("focusin",e=>{const t=e.target;if(t.matches&&t.matches("#doc input:not(.t)")){last=t;const r=t.getBoundingClientRect();kp.style.top=Math.max(0,scrollY+r.top-52)+"px";kp.style.left=Math.max(4,Math.min(innerWidth-190,scrollX+r.left))+"px";kp.classList.toggle("s",t.classList.contains("sn"));kp.classList.add("on")}});
+D.addEventListener("pointerdown",e=>{if(!e.target.closest("#kp,#doc input:not(.t)"))kp.classList.remove("on")});
+kp.addEventListener("mousedown",e=>e.preventDefault());
+kp.addEventListener("click",e=>{const b=e.target.closest("button"),t=last;if(!b||!t)return;const s=t.selectionStart,n=t.selectionEnd;t.focus();t.setRangeText(b.dataset.ch,s,n,"end");t.dispatchEvent(new Event("input",{bubbles:true}))});
+
+/* ---- avvio ---- */
+try{const p=JSON.parse(ls("ct3"));if(p)applica(p);else E.dt.value=td()}catch(x){E.dt.value=td()}
+calc();
+</script>
+</body>
+</html>
